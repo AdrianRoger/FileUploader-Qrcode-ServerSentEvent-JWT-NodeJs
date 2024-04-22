@@ -19,7 +19,7 @@ class ProductRepository {
         });
       });
 
-      return products ?? [];
+      return products ?? []; 
     } catch (error) {
       console.log(`ProductRepository::getProducts error [${error}]`);
       throw new InternalServerException();
