@@ -24,9 +24,9 @@ class UserService {
     }
   }
 
-  async getUserByUsernameAndPassoword({ username, password }) {
+  async getUserByUsername({ username }) {
     try {
-      const userFound = await userRepository.getUserByUsernameAndPassword({ username, password });
+      const userFound = await userRepository.getUserByUsername({ username });
 
       if (!userFound) {
         throw new NotFoundException('User not found.');
@@ -39,6 +39,7 @@ class UserService {
   }
 
   async createUser({ username, password, type }) {
+    console.log(password);
     try {
       //criar verificação usando getUserByUsername
       //se username já estiver em uso returnar statusCode 409 Conflict

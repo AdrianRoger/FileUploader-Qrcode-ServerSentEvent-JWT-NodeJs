@@ -46,11 +46,11 @@ class UserRepository {
     }
   }
 
-  async getUserByUsernameAndPassword({ username, password }) {
+  async getUserByUsername({ username }) {
     try {
       const result = await database.executeQuery({
-        query: `SELECT * FROM users WHERE username = $1 AND password = $2`,
-        args: [username, password]
+        query: `SELECT * FROM users WHERE username = $1 `,
+        args: [username]
       });
 
       const userFound = new User({

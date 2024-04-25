@@ -42,15 +42,4 @@ class Database {
 
 const database = new Database();
 
-// async function teste() {
-//   const result = await database.executeQuery(
-//     {
-//       query: `SELECT * FROM users`
-//     }
-//   );
-//   console.log(result);
-// }
-
-// teste();
-
 module.exports = database;

@@ -1,6 +1,7 @@
 const userService = require('../Services/UserService.js');
 const { BadRequestException } = require('../utils/Exception.js');
 const HttpResponse = require('../utils/HttpResponse.js');
+const passwordUtils = require('../utils/PasswordUtils.js');
 
 
 class UserController {
@@ -38,28 +39,6 @@ class UserController {
     }
   }
 
-  async authenticateUser(req, res) {
-    try {
-      const { username, password } = req.body;
-
-      if (!username || !password) {
-        throw new BadRequestException('Username and password are required.');
-      }
-
-      const userFound = await userService.getUserByUsernameAndPassoword({ username, password });
-
-      const response = new HttpResponse({
-        statusCode: 200,
-        data: userFound,
-      });
-
-      res.status(response.statusCode).json(response);
-    } catch (exception) {
-      const response = HttpResponse.fromException(exception);
-      res.status(response.statusCode).json(response);
-    }
-  }
-
   async createUser(req, res) {
     try {
       const username = req.body.username;
@@ -74,7 +53,9 @@ class UserController {
         throw new BadRequestException('type attribute must be admin ou client.');
       }
 
-      const createdUser = await userService.createUser({ username, password, type });
+      const hashedpassword = await passwordUtils.hashPassword(password);
+      console.log(hashedpassword);
+      const createdUser = await userService.createUser({ username, password: hashedpassword, type });
 
       const response = new HttpResponse({
         statusCode: 201,
