@@ -1,5 +1,6 @@
 import Login from "./pages/Login.js";
-import Teste from "./pages/Teste.js";
+import FormProuct from "./pages/FormProuct.js";
+import ClientPage from "./pages/ClientPage.js";
 
 
 const navigateTo = url => {
@@ -10,7 +11,8 @@ const navigateTo = url => {
 const router = async () => {
   const routes = [
     { path: '/', view: Login },
-    { path: '/client', view: Teste },
+    { path: '/formProduct', view: FormProuct },
+    { path: '/clientPage', view: ClientPage },
     
   ];
 

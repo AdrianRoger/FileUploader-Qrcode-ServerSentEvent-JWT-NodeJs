@@ -3,6 +3,7 @@ const { NotFoundException } = require('../utils/Exception.js');
 const fileDeleter = require('../utils/FileDeleter.js');
 const fs = require('fs');
 const path = require('path');
+const { EventEmitter } = require('events');
 
 class ProductService {
   async getProducts() {
@@ -28,6 +29,8 @@ class ProductService {
         description,
         imgName
       });
+
+      this.emitNewProductEvent(createdProduct);
 
       return createdProduct;
     } catch (exception) {
@@ -73,6 +76,21 @@ class ProductService {
       throw exception;
     }
   }
+
+  // Método para obter o EventEmitter para eventos de criação de produtos
+  getProductEventEmitter() {
+    if (!this.productEventEmitter) {
+      this.productEventEmitter = new EventEmitter();
+    }
+    return this.productEventEmitter;
+  }
+
+  // Método para emitir o evento de novo produto criado
+  emitNewProductEvent(product) {
+    const productEventEmitter = this.getProductEventEmitter();
+    productEventEmitter.emit('new-product', product);
+  }
+
 }
 
 const productService = new ProductService();

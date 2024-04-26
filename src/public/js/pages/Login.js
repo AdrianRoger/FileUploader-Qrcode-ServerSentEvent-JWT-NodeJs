@@ -61,19 +61,23 @@ export default class extends AbastractPage {
         alert(data.error);
         document.cookie = "";
       } else {
-        window.location.href = '/client';
+        const userType = data['data'].type;
+
+        switch(userType){
+          case 'admin':
+            window.location.href = '/formProduct';
+            break;
+          case 'client':
+            window.location.href = '/clientPage';
+            break;
+          default:
+            console.log
+        }
       }
     });
 
     const button = document.createElement('button');
     button.type = 'submit';
-    // a.addEventListener('click', function (e) {
-    //   e.preventDefault(); // Impede o comportamento padrão de redirecionamento do link
-    //   const form = this.closest('form'); // Encontra o formulário mais próximo
-    //   if (form) {
-    //     form.submit(); // Envia o formulário
-    //   }
-    // });
     button.innerHTML = `SEND <span></span>`;
 
     form.appendChild(button);

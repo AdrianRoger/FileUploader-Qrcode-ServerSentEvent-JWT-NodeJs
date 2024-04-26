@@ -103,6 +103,39 @@ class ProductController {
       res.status(response.statusCode).json(response);
     }
   }
+
+  async getProductUpdateEvents(req, res) {
+    try {
+      // Configuração de eventos Server-Sent
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+
+      // Emite uma mensagem de inicialização do servidor
+      res.write('data: Server connected\n\n');
+
+      // Função para enviar um evento de novo produto criado
+      const sendProductEvent = (product) => {
+        res.write(`event: new-product\n`);
+        res.write(`data: ${JSON.stringify(product)}\n\n`);
+      };
+
+      // Ouve os eventos de criação de novos produtos
+      const productEventEmitter = productService.getProductEventEmitter();
+
+      // Assina o evento de novo produto e envia para o cliente
+      productEventEmitter.on('new-product', sendProductEvent);
+
+      // Remove o ouvinte quando a conexão é fechada
+      req.on('close', () => {
+        productEventEmitter.off('new-product', sendProductEvent);
+      });
+    } catch (exception) {
+      // Manipulação de erros
+      const response = HttpResponse.fromException(exception);
+      res.status(response.statusCode).json(response);
+    }
+  }
 }
 
 const productController = new ProductController();
