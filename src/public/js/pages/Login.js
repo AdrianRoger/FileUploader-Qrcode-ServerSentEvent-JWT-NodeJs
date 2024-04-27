@@ -71,7 +71,8 @@ export default class extends AbastractPage {
             window.location.href = '/clientPage';
             break;
           default:
-            console.log
+            console.log('Something wrong isn\'t ok!');
+            break;
         }
       }
     });
